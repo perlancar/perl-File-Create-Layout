@@ -318,12 +318,13 @@ B<OWNERSHIP SETTING NOT YET IMPLEMENTED.>
 
 =head1 LAYOUT SPECIFICATION
 
-Layout is a text document containing one or more files. Each line is either a
-file/directory specification, or a blank line, or a comment. Comment starts with
-zero or more whitespaces, a C<#> (hash) character, and zero or more non-newline
-characters as the comment's content.
+Layout is a text document containing zero or more lines. Each line is either a
+file/directory specification, or a blank line, or a comment line.
 
-The simplest specification line contains just the name of the file or directory.
+Comment line starts with zero or more whitespaces, a C<#> (hash) character, and
+zero or more non-newline characters as the comment's content.
+
+The simplest specification line contains just the name of a file or directory.
 To specify a directory, you need to end with C</> (slash):
 
  # a file
