@@ -6,6 +6,7 @@ package File::Create::Layout;
 use 5.010001;
 use strict;
 use warnings;
+use Log::Any::IfLOG '$log';
 
 use File::chdir;
 
@@ -160,7 +161,7 @@ sub _parse_layout {
             is_dir     => $is_dir,
             is_symlink => defined($sym_target) ? 1:0,
             (symlink_target => $sym_target) x !!(defined $sym_target),
-            level      => $#indents,
+            level      => $#indents >= 0 ? $#indents : 0,
             _linum     => $linum,
             perm       => $perm,
             perm_octal => $orig_perm,
@@ -220,15 +221,20 @@ sub create_files_using_layout {
 
         if (defined $prev_level) {
             if ($e->{level} > $prev_level) {
+                $log->tracef("chdir %s ...", $dirs[-1]);
                 eval { $CWD = $dirs[-1] };
                 return [500, "Can't chdir to $p/$e->{name}: $!"] if $@;
             } elsif ($e->{level} < $prev_level) {
-                eval { $CWD = join("/", (".." x ($prev_level - $e->{level}))) };
-                return [500, "Can't chdir back to previous level at $p: $!"]
+                my $dir = join("/", (("..") x ($prev_level - $e->{level})));
+                $log->tracef("chdir %s ...", $dir);
+                eval { $CWD = $dir };
+                return [500, "Can't chdir back to $dir: $!"]
                     if $@;
             }
         }
 
+        $log->tracef("Creating %s/%s%s ...",
+                     $p, $e->{name}, $e->{is_dir} ? "/":"");
         if ($e->{is_dir}) {
             do {
                 if (defined $e->{perm}) {
@@ -305,7 +311,7 @@ sub check_layout {
 =head1 DESCRIPTION
 
 B<EARLY DEVELOPMENT. MORE OPTIONS WILL BE AVAILABLE (E.G. DRY-RUN, CHECKING A
-LAYOUT, ERROR HANDLING OPTIONS).>
+LAYOUT AGAINST FILESYSTEM, VARIOUS ERROR HANDLING OPTIONS).>
 
 B<OWNERSHIP SETTING NOT YET IMPLEMENTED.>
 
