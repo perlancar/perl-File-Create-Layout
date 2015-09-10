@@ -1,5 +1,12 @@
 Revision history for File-Create-Layout
 
+0.02    2015-09-10 (PERLANCAR) (unreleased)
+
+        - Implement ownership setting.
+
+        -[doc] Typo/wording fixes.
+
+
 0.01    2015-09-09 (PERLANCAR)
 
         - First release.
