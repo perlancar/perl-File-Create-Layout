@@ -204,6 +204,8 @@ _
     },
 };
 sub create_files_using_layout {
+    require File::chown;
+
     my %args = @_;
 
     my $parse_res;
@@ -262,6 +264,13 @@ sub create_files_using_layout {
             }
         }
 
+        if (defined($e->{user}) || defined($e->{group})) {
+            my %opts;
+            $opts{deref} = 0 if $e->{is_symlink};
+            File::chown::chown(\%opts, $e->{user}, $e->{group}, $e->{name})
+                  or return [500, "Can't chown file $p/$e->{name}: $!"];
+        }
+
         $prev_level = $e->{level};
     }
 
@@ -312,8 +321,6 @@ sub check_layout {
 
 B<EARLY DEVELOPMENT. MORE OPTIONS WILL BE AVAILABLE (E.G. DRY-RUN, CHECKING A
 LAYOUT AGAINST FILESYSTEM, VARIOUS ERROR HANDLING OPTIONS).>
-
-B<OWNERSHIP SETTING NOT YET IMPLEMENTED.>
 
 
 =head1 LAYOUT SPECIFICATION
