@@ -319,13 +319,13 @@ B<OWNERSHIP SETTING NOT YET IMPLEMENTED.>
 =head1 LAYOUT SPECIFICATION
 
 Layout is a text document containing zero or more lines. Each line is either a
-file/directory specification, or a blank line, or a comment line.
+file/directory specification line, a blank line, or a comment line.
 
 Comment line starts with zero or more whitespaces, a C<#> (hash) character, and
 zero or more non-newline characters as the comment's content.
 
 The simplest specification line contains just the name of a file or directory.
-To specify a directory, you need to end with C</> (slash):
+To specify a directory, you need to add C</> (slash) immediately after the name:
 
  # a file
  foo.txt
@@ -342,7 +342,7 @@ file using double quotes:
  "#tmpname#"
  "filename containing \"quotes\""
 
-To be exact, the string will be parsed as a JSON string.
+The string will be parsed as a JSON string.
 
 B<Permission and ownership.> Immediately after the filename or directory name,
 you can specify permission mode, as well as ownership (owner user/group):
@@ -352,22 +352,23 @@ you can specify permission mode, as well as ownership (owner user/group):
  file2.txt(600)
 
  # specify owner as well as user+group
- dir1/(ujang,admin.0700)
+ dir1/(ujang,admin,0700)
 
-B<Symlink.> To create a symlink, add C<< -> >> (arrow) with the symlink target.
-Symlink target can be a quoted JSON string if you want to express whitespace or
-other special characters:
+B<Symlink.> To create a symlink, add C<< -> >> (arrow) followed by the symlink
+target. Like filename, symlink target can be an unquoted sequence of
+non-whitespace characters, or a quoted JSON string if you want to have
+whitespace or other special characters:
 
  symlink1 -> ../target
  symlink2 -> "/home/ujang/My Documents"
 
 B<File content.> An unquoted JSON hash (object) can be added in the end,
-separated by a whitespace, e.g. to specify file content (and other extra stuffs
-in the future). By unquoted, it means that the enclosing curly braces C<< { .. }
->> is not written:
+prefixed by at least one whitespace to specify extra stuffs, including file
+content. By unquoted, it means that the enclosing curly braces C<< { .. } >> is
+not written:
 
  file.txt "content":"This is line 1\nThis is line 2\n"
- file2.txt(0660)  "content":"secret"
+ file2.txt(0660)      "content":"secret","foo":"bar","mtime":1441853999
 
 B<Putting files/directories in a subdirectory.> Indentation (only spaces, tabs
 are not allowed) is used for this:
