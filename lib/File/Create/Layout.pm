@@ -292,12 +292,33 @@ sub check_layout {
     [200, "OK", $err ? 0:1, {'func.error' => $err}];
 }
 
+$SPEC{parse_layout} = {
+    v => 1.1,
+    summary => 'Parse layout string into a data structure '.
+        'suitable for processing',
+    args => {
+        %arg_layout,
+    },
+};
+sub parse_layout {
+    my %args = @_;
+
+    my $res;
+    eval { $res = _parse_layout($args{layout}) };
+    return [400, "Layout has error(s): $@"] if $@;
+    [200, "OK", $res];
+}
+
 1;
 # ABSTRACT: Quickly create files/directories according to a layout
 
 =head1 SYNOPSIS
 
- use File::Create::Layout qw(create_files_using_layout);
+ use File::Create::Layout qw(
+     create_files_using_layout
+     check_layout
+     parse_layout
+ );
 
  my $res = create_files_using_layout(layout => <<'EOL');
  file1.txt
