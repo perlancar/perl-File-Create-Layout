@@ -410,3 +410,8 @@ are not allowed) is used for this:
    another-file-inside-dir1
  file5-in-top-level
  file6
+
+
+=head1 SEE ALSO
+
+L<Setup::File::Layout>, transactional/undoable version of this module
