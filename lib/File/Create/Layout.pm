@@ -34,8 +34,8 @@ _
 
 sub _decode_json {
     state $json = do {
-        require JSON;
-        JSON->new->allow_nonref;
+        require JSON::MaybeXS;
+        JSON::MaybeXS->new->allow_nonref;
     };
     $json->decode(shift);
 }
