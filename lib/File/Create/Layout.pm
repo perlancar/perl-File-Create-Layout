@@ -6,7 +6,7 @@ package File::Create::Layout;
 use 5.010001;
 use strict;
 use warnings;
-use Log::Any::IfLOG '$log';
+use Log::ger;
 
 use File::chdir;
 
@@ -223,19 +223,19 @@ sub create_files_using_layout {
 
         if (defined $prev_level) {
             if ($e->{level} > $prev_level) {
-                $log->tracef("chdir %s ...", $dirs[-1]);
+                log_trace("chdir %s ...", $dirs[-1]);
                 eval { $CWD = $dirs[-1] };
                 return [500, "Can't chdir to $p/$e->{name}: $!"] if $@;
             } elsif ($e->{level} < $prev_level) {
                 my $dir = join("/", (("..") x ($prev_level - $e->{level})));
-                $log->tracef("chdir %s ...", $dir);
+                log_trace("chdir %s ...", $dir);
                 eval { $CWD = $dir };
                 return [500, "Can't chdir back to $dir: $!"]
                     if $@;
             }
         }
 
-        $log->tracef("Creating %s/%s%s ...",
+        log_trace("Creating %s/%s%s ...",
                      $p, $e->{name}, $e->{is_dir} ? "/":"");
         if ($e->{is_dir}) {
             do {
