@@ -75,11 +75,11 @@ sub _parse_layout {
             push @indents, $cur_indent;
         } elsif ($cur_indent < $indents[-1]) {
             # indent is shallower than previous spec-line, find previous level
-            my $found;
+            my $found = 0;
             for my $i (reverse 0..$#indents) {
                 if ($cur_indent == $indents[$i]) {
                     $found++;
-                    splice @indents, $i;
+                    splice @indents, $i+1;
                     last;
                 }
             }
@@ -225,12 +225,14 @@ sub create_files_using_layout {
             if ($e->{level} > $prev_level) {
                 log_trace("chdir %s ...", $dirs[-1]);
                 eval { $CWD = $dirs[-1] };
-                return [500, "Can't chdir to $p/$e->{name}: $!"] if $@;
+                return [500, "Can't chdir to $p/$e->{name}: $! (cwd=$CWD)"] if $@;
             } elsif ($e->{level} < $prev_level) {
                 my $dir = join("/", (("..") x ($prev_level - $e->{level})));
-                log_trace("chdir %s ...", $dir);
+                splice @dirs, $e->{level};
+                $p = $prefix . join("", map {"/$_"} @dirs);
+                log_trace("chdir back %s ...", $dir);
                 eval { $CWD = $dir };
-                return [500, "Can't chdir back to $dir: $!"]
+                return [500, "Can't chdir back to $dir: $! (cwd=$CWD)"]
                     if $@;
             }
         }
