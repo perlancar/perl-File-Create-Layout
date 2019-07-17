@@ -1,36 +1,36 @@
-0.060   2019-04-16 (PERLANCAR)
+0.060   2019-04-16  Released-By: PERLANCAR
 
 	- [Bugfix] Fix bug when moving up more than one level.
 
 
-0.05    2017-07-10 (PERLANCAR)
+0.05    2017-07-10  Released-By: PERLANCAR
 
 	- No functional changes.
 
 	- Replace Log::Any with Log::ger.
 
 
-0.04    2016-03-16 (PERLANCAR)
+0.04    2016-03-16  Released-By: PERLANCAR
 
 	- No functional changes.
 
 	- Replace JSON with JSON::MaybeXS.
 
 
-0.03    2015-09-11 (PERLANCAR)
+0.03    2015-09-11  Released-By: PERLANCAR
 
 	- [doc] Mention Setup::File::Layout.
 
 	- Add function: parse_layout().
 
 
-0.02    2015-09-10 (PERLANCAR)
+0.02    2015-09-10  Released-By: PERLANCAR
 
         - Implement ownership setting.
 
         -[doc] Typo/wording fixes.
 
 
-0.01    2015-09-09 (PERLANCAR)
+0.01    2015-09-09  Released-By: PERLANCAR
 
         - First release.
